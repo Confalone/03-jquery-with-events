@@ -12,7 +12,7 @@ articleView.populateFilters = function() {
       // To do so, Build an <option> DOM element that we can append to the author <select> element.
       // Start by grabbing the author's name from `this` article element, and then use that bit of text to create the option tag (in a variable named `optionTag`) that we can append to the #author-filter select element.
       authorName = $(this).attr('data-author');
-      
+
       // TODOne: Refactor this concatenation using a template literal.
       optionTag = `<option value="${authorName}">${authorName}</option>`;
 
@@ -35,7 +35,7 @@ articleView.populateFilters = function() {
 };
 
 articleView.handleAuthorFilter = function() {
-  
+
   $('#author-filter').on('change', function() {
     // REVIEW: Inside this function, "this" is the element that triggered the event handler function we are defining. "$(this)" is using jQuery to select that element (analogous to event.target that we have seen before), so we can chain jQuery methods onto it.
     if ($(this).val()) {
@@ -43,7 +43,7 @@ articleView.handleAuthorFilter = function() {
       // Use an "attribute selector" to find those articles, and fade them in for the reader
       $('article').hide();
       $(`article[data-author="${$(this).val()}"]`).show();
-      
+
     } else {
       // TODOne: If the <select> menu was changed to an option that is blank, we should first show all the articles, except the one article we are using as a template.
       $('article').hide();
@@ -92,23 +92,26 @@ articleView.setTeasers = function() {
   // REVIEW: Hide elements beyond the first 2 in any article body.
   $('.article-body *:nth-of-type(n+2)').hide();
 
-  // TODO: Add an event handler to reveal all the hidden elements, when the .read-on link is clicked. You can go ahead and hide the "Read On" link once it has been clicked. Be sure to prevent the default link-click action!
-  $('article .read-on:focus').on('click', function() {
-    event.preventDefault();  
-    // TODOne: If the <select> menu was changed to an option that has a value, we first need to hide all the articles, and then show just the ones that match for the author that was selected.
-    // Use an "attribute selector" to find those articles, and fade them in for the reader
-    
-    $('this:parent').show();
+  // // TODO: Add an event handler to reveal all the hidden elements, when the .read-on link is clicked. You can go ahead and hide the "Read On" link once it has been clicked. Be sure to prevent the default link-click action!
+  $('#articles').on('click', '.read-on', function(event) {
+
+    event.preventDefault(); // prevents page reload default behavior
+
+    // console.log(`previous element: ${$(this).prev().text()}`);
+    let $clicked = $(this).prev();
+    console.log('I am clicked:' + $clicked);
+    $(this).prev().children().toggle(); // Show full article, NOT ALL ARTICLES
+    // $(this).
 
   });
   // Ideally, we'd attach this as just one event handler on the #articles section, and let it process (in other words... delegate) any .read-on clicks that happen within child nodes.
 };
 
-// TODO: Call all of the above functions, once we are sure the DOM is ready.
+// TODOne: Call all of the above functions, once we are sure the DOM is ready.
 $(document).ready(function() {
   articleView.populateFilters();
   articleView.handleAuthorFilter();
   articleView.handleCategoryFilter();
   articleView.handleMainNav();
-  // articleView.setTeasers();
+  articleView.setTeasers();
 });
