@@ -42,11 +42,10 @@ articleView.handleAuthorFilter = function() {
       // TODOne: If the <select> menu was changed to an option that has a value, we first need to hide all the articles, and then show just the ones that match for the author that was selected.
       // Use an "attribute selector" to find those articles, and fade them in for the reader
       $('article').hide();
-      $(`article[data-author="${$(this).val()}"]`).show();
+      $(`article[data-author="${$(this).val()}"]`).fadeIn();
 
     } else {
       // TODOne: If the <select> menu was changed to an option that is blank, we should first show all the articles, except the one article we are using as a template.
-      $('article').hide();
       $('article').show();
       $('article.template').hide();
     }
@@ -61,10 +60,9 @@ articleView.handleCategoryFilter = function() {
     // Be sure to reset the #author-filter while you are at it!
     if ($(this).val()) {
       $('article').hide();
-      $(`article[data-category="${$(this).val()}"]`).show();
+      $(`article[data-category="${$(this).val()}"]`).fadeIn();
     } else {
       // When the blank (default) option is selected, show all the articles, except for the template.
-      $('article').hide();
       $('article').show();
       $('article.template').hide();
     }
@@ -83,6 +81,7 @@ articleView.handleMainNav = function() {
   // So: You need to dynamically build a selector string with the correct ID, based on the data available to you on the .tab element that was clicked.
   // REVIEW: Now trigger a click on the first .tab element, to set up the page.
   $('.main-nav .tab:first').on('click', function() {
+    // Do we need an event.preventDefault(); here?
     $('article').show();
     $('article.template').hide();
   });
@@ -97,9 +96,7 @@ articleView.setTeasers = function() {
 
     event.preventDefault(); // prevents page reload default behavior
 
-    // console.log(`previous element: ${$(this).prev().text()}`);
-    let $clicked = $(this).prev();
-    console.log('I am clicked:' + $clicked);
+    console.log(`previous element: ${$(this).prev().text()}`);
     $(this).prev().children().toggle(); // Show full article, NOT ALL ARTICLES
     // $(this).
 
